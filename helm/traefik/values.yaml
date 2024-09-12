@@ -1,0 +1,23 @@
+---
+service:
+  type: NodePort
+  externalTrafficPolicy: Cluster
+  ports:
+    web:
+      nodePort: 30080
+      port: 80
+      expose: true
+    websecure:
+      nodePort: 30443
+      port: 443
+      expose: true
+ingressRoute:
+  dashboard:
+    enabled: true
+additionalArguments:
+  - "--entrypoints.web.address=:80"
+  - "--entrypoints.websecure.address=:443"
+  - "--api.dashboard=true"
+  - "--api.insecure=true"
+  - "--providers.kubernetescrd"
+  - "--providers.kubernetesingress"
