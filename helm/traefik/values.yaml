@@ -1,23 +1,27 @@
 ---
+# Traefik Service Configuration
 service:
-  type: NodePort
-  externalTrafficPolicy: Cluster
+  type: NodePort  # Type of the Kubernetes service
+  externalTrafficPolicy: Cluster  # Routing policy for external traffic
   ports:
-    web:
-      nodePort: 30080
-      port: 80
-      expose: true
-    websecure:
-      nodePort: 30443
-      port: 443
-      expose: true
-ingressRoute:
-  dashboard:
-    enabled: true
+    web:  # HTTP entrypoint
+      nodePort: 30080  # NodePort for HTTP
+      port: 80  # Internal service port for HTTP
+      expose: true  # Expose the HTTP port
+    websecure:  # HTTPS entrypoint
+      nodePort: 30443  # NodePort for HTTPS
+      port: 443  # Internal service port for HTTPS
+      expose: true  # Expose the HTTPS port
+
+# Enable the Traefik Dashboard
+dashboard:
+  enabled: true  # Enable the Traefik dashboard
+
+# Additional arguments to customize Traefik behavior
 additionalArguments:
-  - "--entrypoints.web.address=:80"
-  - "--entrypoints.websecure.address=:443"
-  - "--api.dashboard=true"
-  - "--api.insecure=true"
-  - "--providers.kubernetescrd"
-  - "--providers.kubernetesingress"
+  - "--entrypoints.web.address=:80"  # Entrypoint for HTTP
+  - "--entrypoints.websecure.address=:443"  # Entrypoint for HTTPS
+  - "--api.dashboard=true"  # Enable the dashboard API
+  - "--api.insecure=true"  # Enable the insecure API access (for local testing only)
+  - "--providers.kubernetescrd"  # Enable support for Kubernetes CRD provider
+  - "--providers.kubernetesingress"  # Enable support for Kubernetes Ingress provider
