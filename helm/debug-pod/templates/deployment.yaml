@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-debug-pod
+  labels:
+    app: {{ .Release.Name }}-debug-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-debug-pod
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-debug-pod
+    spec:
+      containers:
+      - name: debug-pod
+        image: debian
+        command: [ "sleep", "infinity" ]
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        stdin: true
+        tty: true
+
